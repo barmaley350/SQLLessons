@@ -532,7 +532,11 @@ data
 
 ```python
 fig = plt.figure()
-plt.plot(data["Country"], data["customer_count"])
+plt.plot(data["Country"], data["customer_count"], label="Количество клиентов")
+plt.ylabel("Кол-во клиентов")
+plt.xlabel("Страны")
+plt.title("Top 5 стран по кол-ву клиентов")
+plt.legend()
 plt.show()
 ```
 
