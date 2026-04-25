@@ -6,5 +6,5 @@
 |---------|-----------|---------------|
 | SETUP.md | [SETUP.md](SETUP.md) | Как работать с репозиторием локально |
 | SQL EXAMPLES | [SQL EXAMPLES (.md)](SQL.md) | md версия для изучения |
-| SQL EXAMPLES | [SQL EXAMPLES (.ipynb)](.jupyter_notebooks/examples.ipynb) | ipynb версия для изучения |
+| SQL EXAMPLES | [SQL EXAMPLES (.ipynb)](./jupyter_notebooks/examples.ipynb) | ipynb версия для изучения |
 | SQLBOOK.md | [SQLBOOK.pdf](./files/SQLBOOK.pdf) | pdf версия для скачивания |
