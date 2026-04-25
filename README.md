@@ -528,3 +528,16 @@ data
 </div>
 
 
+
+
+```python
+fig = plt.figure()
+plt.plot(data["Country"], data["customer_count"])
+plt.show()
+```
+
+
+    
+![png](images/output_10_0.png)
+    
+
