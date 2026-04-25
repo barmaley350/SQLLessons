@@ -501,3 +501,70 @@ plt.show()
 ![png](images/output_17_0.png)
     
 
+
+# Альбомы с наибольшей суммой продаж треков
+
+**Описание запроса:**
+
+
+Запрос извлекает название альбома (`Title`), подсчитывает количество треков в каждом альбоме (`track_count`) и вычисляет общую сумму продаж по всем заказам для треков этого альбома (`ammount`). Для этого он объединяет таблицы `InvoiceLine`, `Track` и `Album` через LEFT JOIN, группирует результаты по идентификатору альбома (`AlbumId`) и сортирует итоговую таблицу по сумме продаж в порядке убывания (от наибольшего к наименьшему).
+
+
+```python
+sql = """SELECT 
+	a.Title,
+	COUNT(il.TrackId ) as track_count,
+	SUM(il.UnitPrice * il.Quantity) as ammount
+FROM InvoiceLine il 
+LEFT JOIN Track t ON il.TrackId = t.TrackId
+LEFT JOIN Album a ON t.AlbumId  = a.AlbumId 
+GROUP BY a.AlbumId 
+ORDER BY ammount DESC;
+"""
+data = pd.read_sql_query(sql, conn)
+display(Markdown(data.head().to_markdown(index=False)))
+```
+
+
+| Title                                    |   track_count |   ammount |
+|:-----------------------------------------|--------------:|----------:|
+| Battlestar Galactica (Classic), Season 1 |            18 |     35.82 |
+| The Office, Season 3                     |            16 |     31.84 |
+| Minha Historia                           |            27 |     26.73 |
+| Lost, Season 2                           |            13 |     25.87 |
+| Heroes, Season 1                         |            13 |     25.87 |
+
+
+# Отчёт по продажам альбомов: название, число проданных треков, выручка и её доля от общего объёма
+
+**Описание в одном абзаце:**
+
+Запрос формирует отчёт по продажам музыкальных альбомов: для каждого альбома выводит его название (`a.Title`), количество проданных треков (`track_count`), суммарную выручку от их продаж (`ammount`), а также процентную долю этой выручки от общей суммы продаж всех альбомов (`persent`, округлённую до двух знаков после запятой). Данные собираются через соединение таблиц `InvoiceLine`, `Track` и `Album`, группируются по идентификатору альбома (`a.AlbumId`), а итоговая выборка сортируется по убыванию процентной доли выручки.
+
+
+
+```python
+sql = """SELECT 
+	a.Title,
+	COUNT(il.TrackId ) as track_count,
+	SUM(il.UnitPrice * il.Quantity) as ammount,
+	ROUND((SUM(il.UnitPrice * il.Quantity) * 100) / SUM(SUM(il.UnitPrice * il.Quantity)) OVER (), 2) as persent
+FROM InvoiceLine il 
+LEFT JOIN Track t ON il.TrackId = t.TrackId
+LEFT JOIN Album a ON t.AlbumId  = a.AlbumId 
+GROUP BY a.AlbumId 
+ORDER BY persent DESC;
+"""
+data = pd.read_sql_query(sql, conn)
+display(Markdown(data.head().to_markdown(index=False)))
+```
+
+
+| Title                                    |   track_count |   ammount |   persent |
+|:-----------------------------------------|--------------:|----------:|----------:|
+| Battlestar Galactica (Classic), Season 1 |            18 |     35.82 |      1.54 |
+| The Office, Season 3                     |            16 |     31.84 |      1.37 |
+| Minha Historia                           |            27 |     26.73 |      1.15 |
+| Greatest Hits                            |            26 |     25.74 |      1.11 |
+| Heroes, Season 1                         |            13 |     25.87 |      1.11 |
+
