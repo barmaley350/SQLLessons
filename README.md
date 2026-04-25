@@ -277,7 +277,9 @@ LIMIT 10;
 import sqlite3
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import pandas as pd
+
 ```
 
 
@@ -461,6 +463,65 @@ data
       <td>František</td>
       <td>Wichterlová</td>
       <td>Czech Republic</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+##  Посчитать кол-во клиентов каждой стране
+Запрос `SELECT Country, COUNT(*) AS customer_count FROM customer GROUP BY Country ORDER BY customer_count DESC;` группирует записи из таблицы `customer` по столбцу `Country`, подсчитывает количество клиентов в каждой стране (`COUNT(*)` и присваивает результату псевдоним `customer_count`), а затем сортирует полученные данные по убыванию числа клиентов — так, что страна с наибольшим количеством клиентов оказывается первой в итоговом списке.
+
+
+```python
+sql = """SELECT Country, Count(*) AS customer_count 
+    FROM customer 
+    GROUP BY Country 
+    ORDER BY customer_count DESC
+    LIMIT 5;"""
+data = pd.read_sql_query(sql, conn)
+data
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Country</th>
+      <th>customer_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>USA</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Canada</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>France</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Brazil</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Germany</td>
+      <td>4</td>
     </tr>
   </tbody>
 </table>
