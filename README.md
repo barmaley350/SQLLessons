@@ -561,3 +561,79 @@ plt.show()
 ![png](images/output_10_0.png)
     
 
+
+##  Отчёт по продажам с разбивкой по клиентам и ответственным сотрудникам
+Запрос объединяет данные из таблиц `customer`, `employee` и `invoice`, формирует полные имена клиента (`CustomerName`) и ответственного сотрудника (`EmployeeName`), подсчитывает количество счетов‑фактур (`invoices`) и суммирует их общую стоимость (`total`) для каждого клиента. Результаты группируются по идентификатору клиента и данным сотрудника, а затем сортируются по убыванию общей суммы (`total`).
+
+
+```python
+sql = """SELECT 
+	c.FirstName || ' ' || c.LastName AS CustomerName,
+	e.FirstName || ' ' || e.LastName AS EmployeeName, 
+	COUNT(i.InvoiceId) AS invoices, 
+	SUM(i.Total) AS total
+FROM customer c
+LEFT JOIN employee e ON c.SupportRepId = e.EmployeeId
+LEFT JOIN invoice i ON i.CustomerId  = c.CustomerId 
+GROUP BY c.CustomerId, e.FirstName, e.LastName
+ORDER BY total DESC;"""
+data = pd.read_sql_query(sql, conn)
+data.head()
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>CustomerName</th>
+      <th>EmployeeName</th>
+      <th>invoices</th>
+      <th>total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Helena Holý</td>
+      <td>Steve Johnson</td>
+      <td>7</td>
+      <td>49.62</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Richard Cunningham</td>
+      <td>Margaret Park</td>
+      <td>7</td>
+      <td>47.62</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Luis Rojas</td>
+      <td>Steve Johnson</td>
+      <td>7</td>
+      <td>46.62</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Ladislav Kovács</td>
+      <td>Jane Peacock</td>
+      <td>7</td>
+      <td>45.62</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Hugh O'Reilly</td>
+      <td>Jane Peacock</td>
+      <td>7</td>
+      <td>45.62</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
