@@ -719,3 +719,102 @@ data
 </div>
 
 
+
+## Ежемесячная статистика по продажам всех продуктов
+
+Этот запрос извлекает агрегированную информацию о счетах (инвойсах) по месяцам: группирует записи по месяцам (`STRFTIME('%Y-%m', i.InvoiceDate)`), подсчитывает количество уникальных клиентов (`COUNT(c.CustomerId)`), общее количество счетов (`COUNT(i.InvoiceId)`) и суммарную стоимость счетов (`SUM(i.Total)`) для каждого месяца. Использует соединения: правое (`RIGHT JOIN`) между `Employee` и `Customer` по полю `SupportRepId`, левое (`LEFT JOIN`) между `Customer` и `Invoice` по `CustomerId`. Результаты сортируются по убыванию месяца (`InvoiceYear DESC`) и суммарной стоимости (`Total DESC`).
+
+**Краткое название:** «Ежемесячная статистика по счетам» / «Monthly invoice stats»
+
+
+```python
+sql = """SELECT
+    STRFTIME('%Y-%m', i.InvoiceDate) AS InvoiceYear,
+    COUNT(c.CustomerId) AS Customers,
+    COUNT(i.InvoiceId) AS Invoices,
+    SUM(i.Total) AS Total
+FROM Employee e
+RIGHT JOIN Customer c ON c.SupportRepId = e.EmployeeId
+LEFT JOIN Invoice i ON i.CustomerId = c.CustomerId
+GROUP BY STRFTIME('%Y-%m', i.InvoiceDate)
+ORDER BY InvoiceYear DESC, Total DESC;
+"""
+data = pd.read_sql_query(sql, conn)
+data.head()
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>InvoiceYear</th>
+      <th>Customers</th>
+      <th>Invoices</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2025-12</td>
+      <td>7</td>
+      <td>7</td>
+      <td>38.62</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2025-11</td>
+      <td>7</td>
+      <td>7</td>
+      <td>49.62</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2025-10</td>
+      <td>7</td>
+      <td>7</td>
+      <td>37.62</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2025-09</td>
+      <td>7</td>
+      <td>7</td>
+      <td>37.62</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2025-08</td>
+      <td>7</td>
+      <td>7</td>
+      <td>37.62</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+plt.figure(figsize=(12, 5))
+plt.plot(data["InvoiceYear"], data["Total"], label="Продажи")
+plt.xticks(rotation="vertical")
+plt.xlabel("Год")
+plt.ylabel("Продажи")
+plt.title("Продажи по годам")
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+
+    
+![png](images/output_17_0.png)
+    
+
