@@ -804,12 +804,15 @@ data.head()
 ```python
 plt.figure(figsize=(12, 5))
 plt.plot(data["InvoiceYear"], data["Total"], label="Продажи")
+plt.plot(data["InvoiceYear"], data["Customers"], label="Клиенты")
+
 plt.xticks(rotation="vertical")
-plt.xlabel("Год")
-plt.ylabel("Продажи")
-plt.title("Продажи по годам")
-plt.legend()
 plt.grid(True, alpha=0.3)
+plt.xlabel("Год")
+plt.ylabel("Продажи / Клиенты")
+plt.title("Продажи / Кол-во клиентов по годам")
+plt.legend()
+
 plt.show()
 ```
 
