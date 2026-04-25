@@ -1,0 +1,35 @@
+[project]
+name = "SQLLessons"
+version = "0.1.0"
+description = "SQLLessons"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "nbconvert>=7.17.1",
+    "nbformat>=5.10.4",
+    "pandas>=3.0.2",
+    "ruff>=0.15.11",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+extend-exclude = [
+    ".git",
+    ".mypy_cache",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    "__pycache",
+]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["S101", "D203", "D213", "COM812", "TD003", "TD004", "TD002", "FIX002"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Prefer single quotes over double quotes.
+quote-style = "double"
+preview = true
