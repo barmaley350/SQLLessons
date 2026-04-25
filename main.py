@@ -44,4 +44,4 @@ if __name__ == "__main__":
         "jupyter_notebooks/examples.ipynb",
     ]
 
-    convert_and_merge(notebooks, "README.md")
+    convert_and_merge(notebooks, "SQL.md")
