@@ -10,7 +10,7 @@
 Разберем основные категории SQL‑команд — с расшифровкой, назначением и примерами.
 
 
-## 1. DDL (Data Definition Language) — язык определения данных
+## DDL (Data Definition Language) — язык определения данных
 
 **Назначение:** управление структурой базы данных («скелет» БД): создание, изменение и удаление объектов.
 
@@ -49,7 +49,7 @@ TRUNCATE TABLE employees;
 
 ---
 
-## 2. DML (Data Manipulation Language) — язык манипулирования данными
+## DML (Data Manipulation Language) — язык манипулирования данными
 
 **Назначение:** работа с содержимым таблиц: добавление, изменение, удаление и извлечение данных.
 
@@ -83,7 +83,7 @@ DELETE FROM employees WHERE status = 'уволен';
 
 ---
 
-## 3. DQL (Data Query Language) — язык запросов
+## DQL (Data Query Language) — язык запросов
 
 **Назначение:** только чтение данных (часто считают частью DML, но выделяют отдельно из‑за специфики).
 
@@ -100,7 +100,7 @@ ORDER BY name;
 
 ---
 
-## 4. DCL (Data Control Language) — язык управления доступом
+## DCL (Data Control Language) — язык управления доступом
 
 **Назначение:** контроль прав пользователей и ролей для обеспечения безопасности данных.
 
@@ -120,7 +120,7 @@ REVOKE DELETE ON employees FROM junior_developer;
 
 ---
 
-## 5. TCL (Transaction Control Language) — язык управления транзакциями
+## TCL (Transaction Control Language) — язык управления транзакциями
 
 **Назначение:** обеспечение целостности данных при выполнении группы операций («всё или ничего»).
 
@@ -479,6 +479,7 @@ data
 
 
 ##  Посчитать кол-во клиентов каждой стране
+
 Запрос `SELECT Country, COUNT(*) AS customer_count FROM customer GROUP BY Country ORDER BY customer_count DESC;` группирует записи из таблицы `customer` по столбцу `Country`, подсчитывает количество клиентов в каждой стране (`COUNT(*)` и присваивает результату псевдоним `customer_count`), а затем сортирует полученные данные по убыванию числа клиентов — так, что страна с наибольшим количеством клиентов оказывается первой в итоговом списке.
 
 
@@ -563,6 +564,7 @@ plt.show()
 
 
 ##  Отчёт по продажам с разбивкой по клиентам и ответственным сотрудникам
+
 Запрос объединяет данные из таблиц `customer`, `employee` и `invoice`, формирует полные имена клиента (`CustomerName`) и ответственного сотрудника (`EmployeeName`), подсчитывает количество счетов‑фактур (`invoices`) и суммирует их общую стоимость (`total`) для каждого клиента. Результаты группируются по идентификатору клиента и данным сотрудника, а затем сортируются по убыванию общей суммы (`total`).
 
 
@@ -631,6 +633,94 @@ data.head()
       <td>Jane Peacock</td>
       <td>7</td>
       <td>45.62</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Отчёт по продажам менеджеров (количество и сумма счетов)
+
+Запрос извлекает данные о сотрудниках (формирует полное имя через объединение полей `FirstName` и `LastName` в `EmployeeName`), подсчитывает количество счетов‑фактур (`Invoices`) и суммирует их общую стоимость (`Total`) для каждого сотрудника — с учётом клиентов, закреплённых за ним в качестве менеджера поддержки. Для этого выполняются соединения таблиц `Employee`, `Customer` (по полю `SupportRepId`) и `Invoice` (по `CustomerId`). Результаты группируются по идентификатору сотрудника (`e.EmployeeId`) и сортируются по убыванию суммарной стоимости счетов (`Total`). Функция `COALESCE` гарантирует замену возможных значений `NULL` на `0` в колонках `Invoices` и `Total`.
+
+
+```python
+sql = """SELECT 
+	e.FirstName || ' ' || e.LastName AS EmployeeName,
+	COALESCE(COUNT(i.InvoiceId), 0) AS Invoices,
+	COALESCE(SUM(i.Total), 0) AS Total
+FROM Employee e
+LEFT JOIN Customer c ON c.SupportRepId = e.EmployeeId
+LEFT JOIN Invoice i ON i.CustomerId  = c.CustomerId 
+GROUP BY e.EmployeeId 
+ORDER BY total DESC;"""
+data = pd.read_sql_query(sql, conn)
+data
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>EmployeeName</th>
+      <th>Invoices</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Jane Peacock</td>
+      <td>146</td>
+      <td>833.04</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Margaret Park</td>
+      <td>140</td>
+      <td>775.40</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Steve Johnson</td>
+      <td>126</td>
+      <td>720.16</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Andrew Adams</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Nancy Edwards</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Michael Mitchell</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Robert King</td>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Laura Callahan</td>
+      <td>0</td>
+      <td>0.00</td>
     </tr>
   </tbody>
 </table>
