@@ -279,7 +279,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from IPython.display import Markdown
 ```
 
 
@@ -293,20 +293,19 @@ conn = sqlite3.connect(db_path)
 
 
 ```python
-from IPython.display import Markdown
-sql = "SELECT * FROM customer LIMIT 5;"
+sql = "SELECT FirstName, LastName, Company, Address  FROM customer LIMIT 5;"
 data = pd.read_sql_query(sql, conn)
 display(Markdown(data.to_markdown(index=False)))
 ```
 
 
-|   CustomerId | FirstName   | LastName    | Company                                          | Address                         | City                | State   | Country        | PostalCode   | Phone              | Fax                | Email                    |   SupportRepId |
-|-------------:|:------------|:------------|:-------------------------------------------------|:--------------------------------|:--------------------|:--------|:---------------|:-------------|:-------------------|:-------------------|:-------------------------|---------------:|
-|            1 | Luís        | Gonçalves   | Embraer - Empresa Brasileira de Aeronáutica S.A. | Av. Brigadeiro Faria Lima, 2170 | São José dos Campos | SP      | Brazil         | 12227-000    | +55 (12) 3923-5555 | +55 (12) 3923-5566 | luisg@embraer.com.br     |              3 |
-|            2 | Leonie      | Köhler      | nan                                              | Theodor-Heuss-Straße 34         | Stuttgart           | nan     | Germany        | 70174        | +49 0711 2842222   | nan                | leonekohler@surfeu.de    |              5 |
-|            3 | François    | Tremblay    | nan                                              | 1498 rue Bélanger               | Montréal            | QC      | Canada         | H2G 1A7      | +1 (514) 721-4711  | nan                | ftremblay@gmail.com      |              3 |
-|            4 | Bjørn       | Hansen      | nan                                              | Ullevålsveien 14                | Oslo                | nan     | Norway         | 0171         | +47 22 44 22 22    | nan                | bjorn.hansen@yahoo.no    |              4 |
-|            5 | František   | Wichterlová | JetBrains s.r.o.                                 | Klanova 9/506                   | Prague              | nan     | Czech Republic | 14700        | +420 2 4172 5555   | +420 2 4172 5555   | frantisekw@jetbrains.com |              4 |
+| FirstName   | LastName    | Company                                          | Address                         |
+|:------------|:------------|:-------------------------------------------------|:--------------------------------|
+| Luís        | Gonçalves   | Embraer - Empresa Brasileira de Aeronáutica S.A. | Av. Brigadeiro Faria Lima, 2170 |
+| Leonie      | Köhler      | nan                                              | Theodor-Heuss-Straße 34         |
+| François    | Tremblay    | nan                                              | 1498 rue Bélanger               |
+| Bjørn       | Hansen      | nan                                              | Ullevålsveien 14                |
+| František   | Wichterlová | JetBrains s.r.o.                                 | Klanova 9/506                   |
 
 
 ##  Выбрать все записи из таблицы `customer` по определенным столбцам
