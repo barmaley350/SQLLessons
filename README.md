@@ -315,58 +315,17 @@ display(Markdown(data.to_markdown(index=False)))
 ```python
 sql = "SELECT FirstName, LastName, Country FROM customer LIMIT 5;"
 data = pd.read_sql_query(sql, conn)
-data
+display(Markdown(data.to_markdown(index=False)))
 ```
 
 
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>FirstName</th>
-      <th>LastName</th>
-      <th>Country</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Luís</td>
-      <td>Gonçalves</td>
-      <td>Brazil</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Leonie</td>
-      <td>Köhler</td>
-      <td>Germany</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>François</td>
-      <td>Tremblay</td>
-      <td>Canada</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Bjørn</td>
-      <td>Hansen</td>
-      <td>Norway</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>František</td>
-      <td>Wichterlová</td>
-      <td>Czech Republic</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| FirstName   | LastName    | Country        |
+|:------------|:------------|:---------------|
+| Luís        | Gonçalves   | Brazil         |
+| Leonie      | Köhler      | Germany        |
+| François    | Tremblay    | Canada         |
+| Bjørn       | Hansen      | Norway         |
+| František   | Wichterlová | Czech Republic |
 
 
 ##  Посчитать кол-во клиентов каждой стране
@@ -380,52 +339,17 @@ sql = """SELECT Country, Count(*) AS customer_count
     GROUP BY Country 
     ORDER BY customer_count DESC;"""
 data = pd.read_sql_query(sql, conn)
-data.head(5)
+display(Markdown(data.head(5).to_markdown(index=False)))
 ```
 
 
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Country</th>
-      <th>customer_count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>USA</td>
-      <td>13</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Canada</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>France</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Brazil</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Germany</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| Country   |   customer_count |
+|:----------|-----------------:|
+| USA       |               13 |
+| Canada    |                8 |
+| France    |                5 |
+| Brazil    |                5 |
+| Germany   |                4 |
 
 
 
@@ -471,64 +395,17 @@ LEFT JOIN invoice i ON i.CustomerId  = c.CustomerId
 GROUP BY c.CustomerId, e.FirstName, e.LastName
 ORDER BY total DESC;"""
 data = pd.read_sql_query(sql, conn)
-data.head()
+display(Markdown(data.head(5).to_markdown(index=False)))
 ```
 
 
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>CustomerName</th>
-      <th>EmployeeName</th>
-      <th>invoices</th>
-      <th>total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Helena Holý</td>
-      <td>Steve Johnson</td>
-      <td>7</td>
-      <td>49.62</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Richard Cunningham</td>
-      <td>Margaret Park</td>
-      <td>7</td>
-      <td>47.62</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Luis Rojas</td>
-      <td>Steve Johnson</td>
-      <td>7</td>
-      <td>46.62</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Ladislav Kovács</td>
-      <td>Jane Peacock</td>
-      <td>7</td>
-      <td>45.62</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Hugh O'Reilly</td>
-      <td>Jane Peacock</td>
-      <td>7</td>
-      <td>45.62</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| CustomerName       | EmployeeName   |   invoices |   total |
+|:-------------------|:---------------|-----------:|--------:|
+| Helena Holý        | Steve Johnson  |          7 |   49.62 |
+| Richard Cunningham | Margaret Park  |          7 |   47.62 |
+| Luis Rojas         | Steve Johnson  |          7 |   46.62 |
+| Ladislav Kovács    | Jane Peacock   |          7 |   45.62 |
+| Hugh O'Reilly      | Jane Peacock   |          7 |   45.62 |
 
 
 ## Отчёт по продажам менеджеров (количество и сумма счетов)
@@ -547,76 +424,20 @@ LEFT JOIN Invoice i ON i.CustomerId  = c.CustomerId
 GROUP BY e.EmployeeId 
 ORDER BY total DESC;"""
 data = pd.read_sql_query(sql, conn)
-data
+display(Markdown(data.to_markdown(index=False)))
 ```
 
 
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>EmployeeName</th>
-      <th>Invoices</th>
-      <th>Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Jane Peacock</td>
-      <td>146</td>
-      <td>833.04</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Margaret Park</td>
-      <td>140</td>
-      <td>775.40</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Steve Johnson</td>
-      <td>126</td>
-      <td>720.16</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Andrew Adams</td>
-      <td>0</td>
-      <td>0.00</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Nancy Edwards</td>
-      <td>0</td>
-      <td>0.00</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Michael Mitchell</td>
-      <td>0</td>
-      <td>0.00</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Robert King</td>
-      <td>0</td>
-      <td>0.00</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Laura Callahan</td>
-      <td>0</td>
-      <td>0.00</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| EmployeeName     |   Invoices |   Total |
+|:-----------------|-----------:|--------:|
+| Jane Peacock     |        146 |  833.04 |
+| Margaret Park    |        140 |  775.4  |
+| Steve Johnson    |        126 |  720.16 |
+| Andrew Adams     |          0 |    0    |
+| Nancy Edwards    |          0 |    0    |
+| Michael Mitchell |          0 |    0    |
+| Robert King      |          0 |    0    |
+| Laura Callahan   |          0 |    0    |
 
 
 ## Ежемесячная статистика по продажам всех продуктов
@@ -639,64 +460,17 @@ GROUP BY STRFTIME('%Y-%m', i.InvoiceDate)
 ORDER BY InvoiceYear DESC, Total DESC;
 """
 data = pd.read_sql_query(sql, conn)
-data.head()
+display(Markdown(data.head().to_markdown(index=False)))
 ```
 
 
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>InvoiceYear</th>
-      <th>Customers</th>
-      <th>Invoices</th>
-      <th>Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2025-12</td>
-      <td>7</td>
-      <td>7</td>
-      <td>38.62</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2025-11</td>
-      <td>7</td>
-      <td>7</td>
-      <td>49.62</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2025-10</td>
-      <td>7</td>
-      <td>7</td>
-      <td>37.62</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2025-09</td>
-      <td>7</td>
-      <td>7</td>
-      <td>37.62</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2025-08</td>
-      <td>7</td>
-      <td>7</td>
-      <td>37.62</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+| InvoiceYear   |   Customers |   Invoices |   Total |
+|:--------------|------------:|-----------:|--------:|
+| 2025-12       |           7 |          7 |   38.62 |
+| 2025-11       |           7 |          7 |   49.62 |
+| 2025-10       |           7 |          7 |   37.62 |
+| 2025-09       |           7 |          7 |   37.62 |
+| 2025-08       |           7 |          7 |   37.62 |
 
 
 
