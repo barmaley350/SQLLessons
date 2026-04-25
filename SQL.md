@@ -548,7 +548,8 @@ sql = """SELECT
 	a.Title,
 	COUNT(il.TrackId ) as track_count,
 	SUM(il.UnitPrice * il.Quantity) as ammount,
-	ROUND((SUM(il.UnitPrice * il.Quantity) * 100) / SUM(SUM(il.UnitPrice * il.Quantity)) OVER (), 2) as persent
+	ROUND((SUM(il.UnitPrice * il.Quantity) * 100) / 
+    	SUM(SUM(il.UnitPrice * il.Quantity)) OVER (), 2) as persent
 FROM InvoiceLine il 
 LEFT JOIN Track t ON il.TrackId = t.TrackId
 LEFT JOIN Album a ON t.AlbumId  = a.AlbumId 
