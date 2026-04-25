@@ -301,7 +301,7 @@ def get_data(sql: str) -> pd.DataFrame:
     """Get data."""
     return pd.read_sql_query(sql, conn)
 
-def f(data: pd.DataFrame, head: bool | int = False) -> None:
+def display_data(data: pd.DataFrame, head: bool | int = False) -> None:
     """Display data."""
     if head:
         display(Markdown(data.head(head).to_markdown(index=False)))
@@ -315,7 +315,7 @@ def f(data: pd.DataFrame, head: bool | int = False) -> None:
 
 ```python
 sql = "SELECT FirstName, LastName, Company, Address  FROM customer;"
-f(get_data(sql), 5)
+display_data(get_data(sql), 5)
 ```
 
 
@@ -334,7 +334,7 @@ f(get_data(sql), 5)
 
 ```python
 sql = "SELECT FirstName, LastName, Country FROM customer;"
-f(get_data(sql), 5)
+display_data(get_data(sql), 5)
 ```
 
 
@@ -357,7 +357,7 @@ sql = """SELECT Country, Count(*) AS customer_count
     FROM customer 
     GROUP BY Country 
     ORDER BY customer_count DESC;"""
-f(data:=get_data(sql), 5)
+display_data(data:=get_data(sql), 5)
 ```
 
 
@@ -412,7 +412,7 @@ LEFT JOIN employee e ON c.SupportRepId = e.EmployeeId
 LEFT JOIN invoice i ON i.CustomerId  = c.CustomerId 
 GROUP BY c.CustomerId, e.FirstName, e.LastName
 ORDER BY total DESC;"""
-f(data:=get_data(sql), 5)
+display_data(data:=get_data(sql), 5)
 ```
 
 
@@ -440,7 +440,7 @@ LEFT JOIN Customer c ON c.SupportRepId = e.EmployeeId
 LEFT JOIN Invoice i ON i.CustomerId  = c.CustomerId 
 GROUP BY e.EmployeeId 
 ORDER BY total DESC;"""
-f(data:=get_data(sql))
+display_data(data:=get_data(sql))
 ```
 
 
@@ -475,7 +475,7 @@ LEFT JOIN Invoice i ON i.CustomerId = c.CustomerId
 GROUP BY STRFTIME('%Y-%m', i.InvoiceDate)
 ORDER BY InvoiceYear DESC, Total DESC;
 """
-f(data:=get_data(sql), 5)
+display_data(data:=get_data(sql), 5)
 ```
 
 
@@ -529,7 +529,7 @@ LEFT JOIN Album a ON t.AlbumId  = a.AlbumId
 GROUP BY a.AlbumId 
 ORDER BY ammount DESC;
 """
-f(get_data(sql), 5)
+display_data(get_data(sql), 5)
 ```
 
 
@@ -563,7 +563,7 @@ LEFT JOIN Album a ON t.AlbumId  = a.AlbumId
 GROUP BY a.AlbumId 
 ORDER BY percent DESC;
 """
-f(get_data(sql), 5)
+display_data(get_data(sql), 5)
 ```
 
 
