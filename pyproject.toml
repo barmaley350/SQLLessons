@@ -11,6 +11,7 @@ dependencies = [
     "nbformat>=5.10.4",
     "pandas>=3.0.2",
     "ruff>=0.15.11",
+    "tabulate>=0.10.0",
 ]
 
 [tool.ruff]

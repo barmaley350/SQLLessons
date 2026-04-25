@@ -295,117 +295,13 @@ conn = sqlite3.connect(db_path)
 ```python
 sql = "SELECT * FROM customer LIMIT 5;"
 data = pd.read_sql_query(sql, conn)
-data
+data.to_markdown()
 ```
 
 
 
 
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>CustomerId</th>
-      <th>FirstName</th>
-      <th>LastName</th>
-      <th>Company</th>
-      <th>Address</th>
-      <th>City</th>
-      <th>State</th>
-      <th>Country</th>
-      <th>PostalCode</th>
-      <th>Phone</th>
-      <th>Fax</th>
-      <th>Email</th>
-      <th>SupportRepId</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>Luís</td>
-      <td>Gonçalves</td>
-      <td>Embraer - Empresa Brasileira de Aeronáutica S.A.</td>
-      <td>Av. Brigadeiro Faria Lima, 2170</td>
-      <td>São José dos Campos</td>
-      <td>SP</td>
-      <td>Brazil</td>
-      <td>12227-000</td>
-      <td>+55 (12) 3923-5555</td>
-      <td>+55 (12) 3923-5566</td>
-      <td>luisg@embraer.com.br</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2</td>
-      <td>Leonie</td>
-      <td>Köhler</td>
-      <td>NaN</td>
-      <td>Theodor-Heuss-Straße 34</td>
-      <td>Stuttgart</td>
-      <td>NaN</td>
-      <td>Germany</td>
-      <td>70174</td>
-      <td>+49 0711 2842222</td>
-      <td>NaN</td>
-      <td>leonekohler@surfeu.de</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3</td>
-      <td>François</td>
-      <td>Tremblay</td>
-      <td>NaN</td>
-      <td>1498 rue Bélanger</td>
-      <td>Montréal</td>
-      <td>QC</td>
-      <td>Canada</td>
-      <td>H2G 1A7</td>
-      <td>+1 (514) 721-4711</td>
-      <td>NaN</td>
-      <td>ftremblay@gmail.com</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4</td>
-      <td>Bjørn</td>
-      <td>Hansen</td>
-      <td>NaN</td>
-      <td>Ullevålsveien 14</td>
-      <td>Oslo</td>
-      <td>NaN</td>
-      <td>Norway</td>
-      <td>0171</td>
-      <td>+47 22 44 22 22</td>
-      <td>NaN</td>
-      <td>bjorn.hansen@yahoo.no</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>5</td>
-      <td>František</td>
-      <td>Wichterlová</td>
-      <td>JetBrains s.r.o.</td>
-      <td>Klanova 9/506</td>
-      <td>Prague</td>
-      <td>NaN</td>
-      <td>Czech Republic</td>
-      <td>14700</td>
-      <td>+420 2 4172 5555</td>
-      <td>+420 2 4172 5555</td>
-      <td>frantisekw@jetbrains.com</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+    '|    |   CustomerId | FirstName   | LastName    | Company                                          | Address                         | City                | State   | Country        | PostalCode   | Phone              | Fax                | Email                    |   SupportRepId |\n|---:|-------------:|:------------|:------------|:-------------------------------------------------|:--------------------------------|:--------------------|:--------|:---------------|:-------------|:-------------------|:-------------------|:-------------------------|---------------:|\n|  0 |            1 | Luís        | Gonçalves   | Embraer - Empresa Brasileira de Aeronáutica S.A. | Av. Brigadeiro Faria Lima, 2170 | São José dos Campos | SP      | Brazil         | 12227-000    | +55 (12) 3923-5555 | +55 (12) 3923-5566 | luisg@embraer.com.br     |              3 |\n|  1 |            2 | Leonie      | Köhler      | nan                                              | Theodor-Heuss-Straße 34         | Stuttgart           | nan     | Germany        | 70174        | +49 0711 2842222   | nan                | leonekohler@surfeu.de    |              5 |\n|  2 |            3 | François    | Tremblay    | nan                                              | 1498 rue Bélanger               | Montréal            | QC      | Canada         | H2G 1A7      | +1 (514) 721-4711  | nan                | ftremblay@gmail.com      |              3 |\n|  3 |            4 | Bjørn       | Hansen      | nan                                              | Ullevålsveien 14                | Oslo                | nan     | Norway         | 0171         | +47 22 44 22 22    | nan                | bjorn.hansen@yahoo.no    |              4 |\n|  4 |            5 | František   | Wichterlová | JetBrains s.r.o.                                 | Klanova 9/506                   | Prague              | nan     | Czech Republic | 14700        | +420 2 4172 5555   | +420 2 4172 5555   | frantisekw@jetbrains.com |              4 |'
 
 
 
