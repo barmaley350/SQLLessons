@@ -585,10 +585,12 @@ display_data(get_data(sql), 5)
 sql = """SELECT
 	a.Name, 
 	COUNT(t.TrackId ) AS track_count,
-	SUM(t.Milliseconds / 360000) AS duration
+	SUM(t.Milliseconds) / 60000 AS duration_min,
+	(SUM(SUM(t.Milliseconds)) OVER () / SUM(COUNT(t.TrackId )) OVER ()) / 60000 as duration_avg_min
 FROM Artist a 
 LEFT JOIN Album a2 ON a.ArtistId = a2.ArtistId 
 LEFT JOIN Track t ON a2.AlbumId = t.AlbumId 
+WHERE t.Milliseconds > 0
 GROUP BY a.ArtistId 
 ORDER BY track_count DESC;
 """
@@ -596,18 +598,18 @@ display_data(data:=get_data(sql), 10)
 ```
 
 
-| Name            |   track_count |   duration |
-|:----------------|--------------:|-----------:|
-| Iron Maiden     |           213 |         80 |
-| U2              |           135 |          6 |
-| Led Zeppelin    |           114 |         46 |
-| Metallica       |           112 |         47 |
-| Deep Purple     |            92 |         31 |
-| Lost            |            92 |        633 |
-| Pearl Jam       |            67 |          5 |
-| Lenny Kravitz   |            57 |          4 |
-| Various Artists |            56 |          0 |
-| The Office      |            53 |        178 |
+| Name            |   track_count |   duration_min |   duration_avg_min |
+|:----------------|--------------:|---------------:|-------------------:|
+| Iron Maiden     |           213 |           1197 |                  6 |
+| U2              |           135 |            590 |                  6 |
+| Led Zeppelin    |           114 |            668 |                  6 |
+| Metallica       |           112 |            648 |                  6 |
+| Deep Purple     |            92 |            537 |                  6 |
+| Lost            |            92 |           3971 |                  6 |
+| Pearl Jam       |            67 |            275 |                  6 |
+| Lenny Kravitz   |            57 |            251 |                  6 |
+| Various Artists |            56 |            233 |                  6 |
+| The Office      |            53 |           1248 |                  6 |
 
 
 
@@ -615,7 +617,8 @@ display_data(data:=get_data(sql), 10)
 data = data.head(20)
 plt.figure(figsize=(12, 5))
 plt.plot(data["Name"], data["track_count"], label="Кол-во песен")
-plt.plot(data["Name"], data["duration"], label="Продолжительность (ч.)")
+plt.plot(data["Name"], data["duration_min"], label="Продолжительность (ч.)")
+plt.plot(data["Name"], data["duration_avg_min"], label="Средняя продолжительность (ч.)")
 
 plt.xticks(rotation="vertical")
 plt.grid(True, alpha=0.3)
