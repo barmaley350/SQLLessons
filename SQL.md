@@ -549,19 +549,19 @@ sql = """SELECT
 	COUNT(il.TrackId ) as track_count,
 	SUM(il.UnitPrice * il.Quantity) as ammount,
 	ROUND((SUM(il.UnitPrice * il.Quantity) * 100) / 
-    	SUM(SUM(il.UnitPrice * il.Quantity)) OVER (), 2) as persent
+    	SUM(SUM(il.UnitPrice * il.Quantity)) OVER (), 2) as percent
 FROM InvoiceLine il 
 LEFT JOIN Track t ON il.TrackId = t.TrackId
 LEFT JOIN Album a ON t.AlbumId  = a.AlbumId 
 GROUP BY a.AlbumId 
-ORDER BY persent DESC;
+ORDER BY percent DESC;
 """
 data = pd.read_sql_query(sql, conn)
 display(Markdown(data.head().to_markdown(index=False)))
 ```
 
 
-| Title                                    |   track_count |   ammount |   persent |
+| Title                                    |   track_count |   ammount |   percent |
 |:-----------------------------------------|--------------:|----------:|----------:|
 | Battlestar Galactica (Classic), Season 1 |            18 |     35.82 |      1.54 |
 | The Office, Season 3                     |            16 |     31.84 |      1.37 |
