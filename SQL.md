@@ -575,3 +575,60 @@ display_data(get_data(sql), 5)
 | Greatest Hits                            |            26 |     25.74 |      1.11 |
 | Heroes, Season 1                         |            13 |     25.87 |      1.11 |
 
+
+# Отчёт по артистам: количество и длительность треков
+
+Запрос выбирает имя артиста (`a.Name`), подсчитывает количество треков для каждого артиста (`track_count`) и суммирует их длительность в условных единицах (миллисекунды поделены на 36 000 — вероятно, попытка получить длительность в десятых долях часа), объединяя данные из таблиц `Artist`, `Album` и `Track` через `LEFT JOIN`. Результаты группируются по идентификатору артиста (`ArtistId`) и сортируются по количеству треков в порядке убывания.
+
+
+```python
+sql = """SELECT
+	a.Name, 
+	COUNT(t.TrackId ) AS track_count,
+	SUM(t.Milliseconds / 360000) AS duration
+FROM Artist a 
+LEFT JOIN Album a2 ON a.ArtistId = a2.ArtistId 
+LEFT JOIN Track t ON a2.AlbumId = t.AlbumId 
+GROUP BY a.ArtistId 
+ORDER BY track_count DESC;
+"""
+display_data(data:=get_data(sql), 10)
+```
+
+
+| Name            |   track_count |   duration |
+|:----------------|--------------:|-----------:|
+| Iron Maiden     |           213 |         80 |
+| U2              |           135 |          6 |
+| Led Zeppelin    |           114 |         46 |
+| Metallica       |           112 |         47 |
+| Deep Purple     |            92 |         31 |
+| Lost            |            92 |        633 |
+| Pearl Jam       |            67 |          5 |
+| Lenny Kravitz   |            57 |          4 |
+| Various Artists |            56 |          0 |
+| The Office      |            53 |        178 |
+
+
+
+```python
+data = data.head(20)
+plt.figure(figsize=(12, 5))
+plt.plot(data["Name"], data["track_count"], label="Кол-во песен")
+plt.plot(data["Name"], data["duration"], label="Продолжительность (ч.)")
+
+plt.xticks(rotation="vertical")
+plt.grid(True, alpha=0.3)
+plt.xlabel("Исполнитель")
+plt.ylabel("Кол-во песен / Продолжительность (ч.)")
+plt.title("Кол-во песен / Продолжительность (ч.)")
+plt.legend()
+
+plt.show()
+```
+
+
+    
+![png](images/output_25_0.png)
+    
+
