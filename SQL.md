@@ -295,14 +295,27 @@ db_path = Path(Path.cwd().parent) / "db/chinook.db"
 conn = sqlite3.connect(db_path)
 ```
 
+
+```python
+def get_data(sql: str) -> pd.DataFrame:
+    """Get data."""
+    return pd.read_sql_query(sql, conn)
+
+def f(data: pd.DataFrame, head: bool | int = False) -> None:
+    """Display data."""
+    if head:
+        display(Markdown(data.head(head).to_markdown(index=False)))
+    else:
+        display(Markdown(data.to_markdown(index=False)))
+```
+
 ##  Выбрать все записи из таблицы `customer`
 Запрос `SELECT * FROM customer LIMIT 5;` извлекает все столбцы из таблицы `customer` и возвращает первые 5 строк данных — остальные записи игнорируются.
 
 
 ```python
-sql = "SELECT FirstName, LastName, Company, Address  FROM customer LIMIT 5;"
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.to_markdown(index=False)))
+sql = "SELECT FirstName, LastName, Company, Address  FROM customer;"
+f(get_data(sql), 5)
 ```
 
 
@@ -320,9 +333,8 @@ display(Markdown(data.to_markdown(index=False)))
 
 
 ```python
-sql = "SELECT FirstName, LastName, Country FROM customer LIMIT 5;"
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.to_markdown(index=False)))
+sql = "SELECT FirstName, LastName, Country FROM customer;"
+f(get_data(sql), 5)
 ```
 
 
@@ -345,8 +357,7 @@ sql = """SELECT Country, Count(*) AS customer_count
     FROM customer 
     GROUP BY Country 
     ORDER BY customer_count DESC;"""
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.head(5).to_markdown(index=False)))
+f(data:=get_data(sql), 5)
 ```
 
 
@@ -381,7 +392,7 @@ plt.show()
 
 
     
-![png](images/output_10_0.png)
+![png](images/output_11_0.png)
     
 
 
@@ -401,8 +412,7 @@ LEFT JOIN employee e ON c.SupportRepId = e.EmployeeId
 LEFT JOIN invoice i ON i.CustomerId  = c.CustomerId 
 GROUP BY c.CustomerId, e.FirstName, e.LastName
 ORDER BY total DESC;"""
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.head(5).to_markdown(index=False)))
+f(data:=get_data(sql), 5)
 ```
 
 
@@ -430,8 +440,7 @@ LEFT JOIN Customer c ON c.SupportRepId = e.EmployeeId
 LEFT JOIN Invoice i ON i.CustomerId  = c.CustomerId 
 GROUP BY e.EmployeeId 
 ORDER BY total DESC;"""
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.to_markdown(index=False)))
+f(data:=get_data(sql))
 ```
 
 
@@ -466,8 +475,7 @@ LEFT JOIN Invoice i ON i.CustomerId = c.CustomerId
 GROUP BY STRFTIME('%Y-%m', i.InvoiceDate)
 ORDER BY InvoiceYear DESC, Total DESC;
 """
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.head().to_markdown(index=False)))
+f(data:=get_data(sql), 5)
 ```
 
 
@@ -498,7 +506,7 @@ plt.show()
 
 
     
-![png](images/output_17_0.png)
+![png](images/output_18_0.png)
     
 
 
@@ -521,8 +529,7 @@ LEFT JOIN Album a ON t.AlbumId  = a.AlbumId
 GROUP BY a.AlbumId 
 ORDER BY ammount DESC;
 """
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.head().to_markdown(index=False)))
+f(get_data(sql), 5)
 ```
 
 
@@ -556,8 +563,7 @@ LEFT JOIN Album a ON t.AlbumId  = a.AlbumId
 GROUP BY a.AlbumId 
 ORDER BY percent DESC;
 """
-data = pd.read_sql_query(sql, conn)
-display(Markdown(data.head().to_markdown(index=False)))
+f(get_data(sql), 5)
 ```
 
 
