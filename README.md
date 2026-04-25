@@ -406,3 +406,64 @@ data
 </div>
 
 
+
+##  Выбрать все записи из таблицы `customer` по определенным столбцам
+Запрос `SELECT FirstName, LastName, Country FROM customer LIMIT 5;` извлекает из таблицы `customer` только три указанных столбца (`FirstName`, `LastName` и `Country`) и возвращает первые 5 строк данных — все остальные строки игнорируются благодаря ограничению `LIMIT 5`.
+
+
+```python
+sql = "SELECT FirstName, LastName, Country FROM customer LIMIT 5;"
+data = pd.read_sql_query(sql, conn)
+data
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Luís</td>
+      <td>Gonçalves</td>
+      <td>Brazil</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Leonie</td>
+      <td>Köhler</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>François</td>
+      <td>Tremblay</td>
+      <td>Canada</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Bjørn</td>
+      <td>Hansen</td>
+      <td>Norway</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>František</td>
+      <td>Wichterlová</td>
+      <td>Czech Republic</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
