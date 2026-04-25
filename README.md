@@ -6,4 +6,4 @@
 |---------|-----------|---------------|
 | SETUP.md | [SETUP.md](SETUP.md) | Как работать с репозиторием локально |
 | SQL.md | [SQL.md](SQL.md) | md версия для изучения в github |
-| SQLBOOK.md | [SQLBOOK.dpf](./files/SQLBOOK.dpf) | pdf версия для скачивания |
+| SQLBOOK.md | [SQLBOOK.pdf](./files/SQLBOOK.pdf) | pdf версия для скачивания |
