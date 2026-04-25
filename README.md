@@ -478,10 +478,9 @@ data
 sql = """SELECT Country, Count(*) AS customer_count 
     FROM customer 
     GROUP BY Country 
-    ORDER BY customer_count DESC
-    LIMIT 5;"""
+    ORDER BY customer_count DESC;"""
 data = pd.read_sql_query(sql, conn)
-data
+data.head(5)
 ```
 
 
@@ -531,12 +530,21 @@ data
 
 
 ```python
-fig = plt.figure()
-plt.plot(data["Country"], data["customer_count"], label="Количество клиентов")
-plt.ylabel("Кол-во клиентов")
-plt.xlabel("Страны")
-plt.title("Top 5 стран по кол-ву клиентов")
-plt.legend()
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+ax1.plot(data["Country"].head(5), data["customer_count"].head(5), label="Количество клиентов")
+ax1.set_xlabel("Кол-во клиентов")
+ax1.set_ylabel("Страны")
+ax1.set_title("Top 5 стран по кол-ву клиентов")
+ax1.legend()
+ax1.grid(True, alpha=0.3)
+
+ax2.plot(data["Country"].tail(5), data["customer_count"].tail(5), label="Количество клиентов")
+ax2.set_xlabel("Кол-во клиентов")
+ax2.set_ylabel("Страны")
+ax2.set_title("Top 5 стран по кол-ву клиентов")
+ax2.legend()
+ax2.grid(True, alpha=0.3)
+
 plt.show()
 ```
 
