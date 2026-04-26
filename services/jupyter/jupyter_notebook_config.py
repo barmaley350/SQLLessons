@@ -1,0 +1,10 @@
+c.NotebookApp.ip = "0.0.0.0"
+c.NotebookApp.port = 8888
+c.NotebookApp.allow_origin = "*"
+c.NotebookApp.allow_remote_access = True
+c.NotebookApp.open_browser = False
+c.NotebookApp.token = ""  # Отключаем токен Jupyter
+c.NotebookApp.password = ""
+c.NotebookApp.disable_check_xsrf = True
+# c.NotebookApp.base_url = "/data"
+c.NotebookApp.notebook_dir = "/home/jovyan/work"

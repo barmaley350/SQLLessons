@@ -1,0 +1,39 @@
+networks:
+  internal-net:
+
+services:
+  # ----------------------------------------------------------------------------
+  # jupyter
+  # ----------------------------------------------------------------------------
+  service.jupyter:
+    build:
+      context: .
+      dockerfile: ./services/jupyter/Dockerfile
+    ports:
+      - 8888:8888      
+    expose:
+      - 8888
+    volumes:
+      - ./services/jupyter/data:/home/jovyan/work/data
+      - ./db:/home/jovyan/work/db
+    restart: unless-stopped
+    networks:
+      - internal-net
+
+  # ----------------------------------------------------------------------------
+  # apache superset
+  # ----------------------------------------------------------------------------
+  service.superset:
+    build:
+      context: .
+      dockerfile: ./services/superset/Dockerfile
+    ports:
+      - 8088:8088
+    expose:
+      - 8088      
+    volumes:
+      - ./services/superset/data:/app/superset_home
+    restart: unless-stopped
+    networks:
+      - internal-net
+ 

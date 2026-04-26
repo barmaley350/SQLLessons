@@ -13,7 +13,7 @@ def convert_and_merge(notebook_paths: list[str], output_md: str) -> None:
         config={
             "ExtractOutputPreprocessor": {
                 "enabled": True,
-                "output_filename_template": "images/{unique_key}_{cell_index}_{index}.png",
+                "output_filename_template": "images/{unique_key}_{cell_index}_{index}.png",  # noqa: E501
             }
         }
     )
@@ -23,7 +23,7 @@ def convert_and_merge(notebook_paths: list[str], output_md: str) -> None:
         with Path(nb_path).open("r", encoding="utf-8") as f:
             notebook = nbformat.read(f, as_version=4)
 
-        (body, resources) = markdown_exporter.from_notebook_node(notebook)  # noqa: RUF059
+        (body, resources) = markdown_exporter.from_notebook_node(notebook)
         body_cleaned = re.sub(r"<style scoped>.*?</style>", "", body, flags=re.DOTALL)
         full_content.append(body_cleaned)
 
@@ -40,8 +40,8 @@ def convert_and_merge(notebook_paths: list[str], output_md: str) -> None:
 
 if __name__ == "__main__":
     notebooks = [
-        "jupyter_notebooks/header.ipynb",
-        "jupyter_notebooks/examples.ipynb",
+        "services/jupyter/data/header.ipynb",
+        "services/jupyter/data/examples.ipynb",
     ]
 
     convert_and_merge(notebooks, "SQL.md")
