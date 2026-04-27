@@ -7,7 +7,7 @@ USER root
 RUN apt-get update && apt-get install -y --no-install-recommends bash 
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install uv --no-cache-dir
-RUN uv pip install psycopg2-binary
+RUN uv pip install psycopg2-binary openpyxl
 
 USER superset
 

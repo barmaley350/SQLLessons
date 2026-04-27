@@ -10,7 +10,7 @@ RUN pip install uv --no-cache-dir
 
 USER jovyan
 
-RUN uv pip install --system psycopg2-binary matplotlib pandas tabulate
+RUN uv pip install --system psycopg2-binary matplotlib pandas tabulate openpyxl
 
 COPY ./services/jupyter/jupyter_notebook_config.py /home/jovyan/.jupyter/
 
