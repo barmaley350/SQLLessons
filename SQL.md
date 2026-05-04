@@ -638,22 +638,51 @@ plt.show()
     
 
 
+# Top 10 артистов по продажам с разбивкой по годам
+
+Сначала с помощью SQL‑запроса извлекает данные о продажах (включая дату счёта, город и страну оплаты, сумму, цену и количество единиц товара, название альбома, имя артиста и жанр); затем преобразует столбец `InvoiceDate` в год (формат `YYYY`); после этого создаёт сводную таблицу (`pivot_table`), где строки — имена артистов (`ArtistName`), столбцы — годы (`InvoiceDate`), а значения — суммарная выручка (`Total`) по каждому артисту за каждый год (с заполнением пропусков нулями и добавлением итоговой строки «Total»); наконец, отбирает топ‑10 артистов с наибольшей суммарной выручкой за весь период и сохраняет результат в переменную `top_10`.
+
 
 ```python
-# Данные с дубликатами
-data = {
-    'Product': ['Carrots', 'Broccoli', 'Banana', 'Banana'],
-    'Category': ['Vegetable', 'Vegetable', 'Fruit', 'Fruit'],
-    'Quantity': [8, 5, 3, 4],
-    'Amount': [270, 239, 617, 384]
-}
-df = pd.DataFrame(data)
+sql = """SELECT
+	i.InvoiceDate,
+	i.BillingCity,
+	i.BillingCountry,
+	(il.UnitPrice * il.Quantity) AS Total,
+	il.UnitPrice,
+	il.Quantity,
+	a.Title,
+	ar.Name AS ArtistName,
+	g.Name AS GengeName
+FROM
+	Invoice AS i
+LEFT JOIN InvoiceLine AS il
+  ON i.InvoiceId = il.InvoiceId
+LEFT JOIN Track t 
+  ON il.TrackId = t.TrackId
+LEFT JOIN Genre g 
+  ON t.GenreId = g.GenreId
+LEFT JOIN Album a 
+  ON t.AlbumId = a.AlbumId
+LEFT JOIN Artist ar 
+  ON a.ArtistId = ar.ArtistId;
+"""
 
-# pivot = df.pivot_table(index=['Product'], values=['Amount'], aggfunc='sum')
-# # display_data(pivot, index=True)..
-# pivot
-pivot = df.pivot_table(index=['Product', 'Category'], values=['Amount'], aggfunc='sum')
-pivot
+df = get_data(sql)
+df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"]).dt.strftime("%Y")
+
+pivot = df.pivot_table(
+    index="ArtistName",
+    columns="InvoiceDate",
+    values="Total",
+    aggfunc="sum",
+    fill_value=0,
+    margins=True,
+    margins_name="Total"    
+)
+top_5 = pivot.nlargest(10, "Total")
+top_5
+
 
 
 
@@ -667,31 +696,114 @@ pivot
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th></th>
-      <th></th>
-      <th>Amount</th>
+      <th>InvoiceDate</th>
+      <th>2021</th>
+      <th>2022</th>
+      <th>2023</th>
+      <th>2024</th>
+      <th>2025</th>
+      <th>Total</th>
     </tr>
     <tr>
-      <th>Product</th>
-      <th>Category</th>
+      <th>ArtistName</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>Banana</th>
-      <th>Fruit</th>
-      <td>1001</td>
+      <th>Total</th>
+      <td>449.46</td>
+      <td>481.45</td>
+      <td>469.58</td>
+      <td>477.53</td>
+      <td>450.58</td>
+      <td>2328.60</td>
     </tr>
     <tr>
-      <th>Broccoli</th>
-      <th>Vegetable</th>
-      <td>239</td>
+      <th>Iron Maiden</th>
+      <td>33.66</td>
+      <td>34.65</td>
+      <td>0.99</td>
+      <td>33.66</td>
+      <td>35.64</td>
+      <td>138.60</td>
     </tr>
     <tr>
-      <th>Carrots</th>
-      <th>Vegetable</th>
-      <td>270</td>
+      <th>U2</th>
+      <td>0.00</td>
+      <td>26.73</td>
+      <td>26.73</td>
+      <td>27.72</td>
+      <td>24.75</td>
+      <td>105.93</td>
+    </tr>
+    <tr>
+      <th>Metallica</th>
+      <td>21.78</td>
+      <td>22.77</td>
+      <td>2.97</td>
+      <td>25.74</td>
+      <td>16.83</td>
+      <td>90.09</td>
+    </tr>
+    <tr>
+      <th>Led Zeppelin</th>
+      <td>22.77</td>
+      <td>21.78</td>
+      <td>2.97</td>
+      <td>23.76</td>
+      <td>14.85</td>
+      <td>86.13</td>
+    </tr>
+    <tr>
+      <th>Lost</th>
+      <td>0.00</td>
+      <td>23.88</td>
+      <td>21.89</td>
+      <td>19.90</td>
+      <td>15.92</td>
+      <td>81.59</td>
+    </tr>
+    <tr>
+      <th>The Office</th>
+      <td>0.00</td>
+      <td>11.94</td>
+      <td>9.95</td>
+      <td>25.87</td>
+      <td>1.99</td>
+      <td>49.75</td>
+    </tr>
+    <tr>
+      <th>Os Paralamas Do Sucesso</th>
+      <td>8.91</td>
+      <td>0.99</td>
+      <td>11.88</td>
+      <td>13.86</td>
+      <td>8.91</td>
+      <td>44.55</td>
+    </tr>
+    <tr>
+      <th>Deep Purple</th>
+      <td>11.88</td>
+      <td>11.88</td>
+      <td>9.90</td>
+      <td>0.00</td>
+      <td>9.90</td>
+      <td>43.56</td>
+    </tr>
+    <tr>
+      <th>Faith No More</th>
+      <td>15.84</td>
+      <td>9.90</td>
+      <td>8.91</td>
+      <td>0.00</td>
+      <td>6.93</td>
+      <td>41.58</td>
     </tr>
   </tbody>
 </table>
