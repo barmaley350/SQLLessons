@@ -650,7 +650,7 @@ data = {
 df = pd.DataFrame(data)
 
 pivot = df.pivot_table(index=['Product'], values=['Amount'], aggfunc='sum')
-# display_data(pivot, index=True)
+# display_data(pivot, index=True)..
 pivot
 
 ```
