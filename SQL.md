@@ -653,15 +653,48 @@ df = pd.DataFrame(data)
 # # display_data(pivot, index=True)..
 # pivot
 pivot = df.pivot_table(index=['Product', 'Category'], values=['Amount'], aggfunc='sum')
-print(pivot)
+pivot
 
 
 
 ```
 
-                        Amount
-    Product  Category         
-    Banana   Fruit        1001
-    Broccoli Vegetable     239
-    Carrots  Vegetable     270
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>Amount</th>
+    </tr>
+    <tr>
+      <th>Product</th>
+      <th>Category</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Banana</th>
+      <th>Fruit</th>
+      <td>1001</td>
+    </tr>
+    <tr>
+      <th>Broccoli</th>
+      <th>Vegetable</th>
+      <td>239</td>
+    </tr>
+    <tr>
+      <th>Carrots</th>
+      <th>Vegetable</th>
+      <td>270</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 
