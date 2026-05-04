@@ -682,10 +682,6 @@ pivot = df.pivot_table(
 )
 top_5 = pivot.nlargest(10, "Total")
 display_data(top_5, index=True)
-
-
-
-
 ```
 
 
@@ -701,4 +697,65 @@ display_data(top_5, index=True)
 | Os Paralamas Do Sucesso |   8.91 |   0.99 |  11.88 |  13.86 |   8.91 |   44.55 |
 | Deep Purple             |  11.88 |  11.88 |   9.9  |   0    |   9.9  |   43.56 |
 | Faith No More           |  15.84 |   9.9  |   8.91 |   0    |   6.93 |   41.58 |
+
+
+# Top 10 жанров музыки по продажам с разбивкой по годам
+
+Сначала с помощью SQL‑запроса извлекает данные о продажах (включая дату счёта, город и страну оплаты, сумму, цену и количество единиц товара, название альбома, имя артиста и жанр); затем преобразует столбец `InvoiceDate` в год (формат `YYYY`); после этого создаёт сводную таблицу (`pivot_table`), где строки — имена артистов (`GengeName`), столбцы — годы (`InvoiceDate`), а значения — суммарная выручка (`Total`) по каждому артисту за каждый год (с заполнением пропусков нулями и добавлением итоговой строки «Total»); наконец, отбирает топ‑10 артистов с наибольшей суммарной выручкой за весь период и сохраняет результат в переменную `top_10`.
+
+
+```python
+sql = """SELECT
+	i.InvoiceDate,
+	i.BillingCity,
+	i.BillingCountry,
+	(il.UnitPrice * il.Quantity) AS Total,
+	il.UnitPrice,
+	il.Quantity,
+	a.Title,
+	ar.Name AS ArtistName,
+	g.Name AS GengeName
+FROM
+	Invoice AS i
+LEFT JOIN InvoiceLine AS il
+  ON i.InvoiceId = il.InvoiceId
+LEFT JOIN Track t 
+  ON il.TrackId = t.TrackId
+LEFT JOIN Genre g 
+  ON t.GenreId = g.GenreId
+LEFT JOIN Album a 
+  ON t.AlbumId = a.AlbumId
+LEFT JOIN Artist ar 
+  ON a.ArtistId = ar.ArtistId;
+"""
+
+df = get_data(sql)
+df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"]).dt.strftime("%Y")
+
+pivot = df.pivot_table(
+    index="GengeName",
+    columns="InvoiceDate",
+    values="Total",
+    aggfunc="sum",
+    fill_value=0,
+    margins=True,
+    margins_name="Total"    
+)
+top_5 = pivot.nlargest(10, "Total")
+display_data(top_5, index=True)
+```
+
+
+| GengeName          |   2021 |   2022 |   2023 |   2024 |   2025 |   Total |
+|:-------------------|-------:|-------:|-------:|-------:|-------:|--------:|
+| Total              | 449.46 | 481.45 | 469.58 | 477.53 | 450.58 | 2328.6  |
+| Rock               | 178.2  | 155.43 | 156.42 | 162.36 | 174.24 |  826.65 |
+| Latin              |  82.17 |  77.22 |  80.19 |  63.36 |  79.2  |  382.14 |
+| Metal              |  61.38 |  53.46 |  25.74 |  65.34 |  55.44 |  261.36 |
+| Alternative & Punk |  62.37 |  39.6  |  45.54 |  38.61 |  55.44 |  241.56 |
+| TV Shows           |   0    |  25.87 |  27.86 |  25.87 |  13.93 |   93.53 |
+| Jazz               |  19.8  |  15.84 |  15.84 |   5.94 |  21.78 |   79.2  |
+| Blues              |  10.89 |  10.89 |  19.8  |   8.91 |   9.9  |   60.39 |
+| Drama              |   0    |  17.91 |  11.94 |  17.91 |   9.95 |   57.71 |
+| Classical          |   0    |  13.86 |   9.9  |  16.83 |   0    |   40.59 |
 
