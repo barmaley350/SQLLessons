@@ -649,43 +649,19 @@ data = {
 }
 df = pd.DataFrame(data)
 
-pivot = df.pivot_table(index=['Product'], values=['Amount'], aggfunc='sum')
-# display_data(pivot, index=True)..
-pivot
+# pivot = df.pivot_table(index=['Product'], values=['Amount'], aggfunc='sum')
+# # display_data(pivot, index=True)..
+# pivot
+pivot = df.pivot_table(index=['Product', 'Category'], values=['Amount'], aggfunc='sum')
+print(pivot)
+
+
 
 ```
 
-
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Amount</th>
-    </tr>
-    <tr>
-      <th>Product</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Banana</th>
-      <td>1001</td>
-    </tr>
-    <tr>
-      <th>Broccoli</th>
-      <td>239</td>
-    </tr>
-    <tr>
-      <th>Carrots</th>
-      <td>270</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+                        Amount
+    Product  Category         
+    Banana   Fruit        1001
+    Broccoli Vegetable     239
+    Carrots  Vegetable     270
 
