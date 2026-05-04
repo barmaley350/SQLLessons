@@ -681,132 +681,23 @@ pivot = df.pivot_table(
     margins_name="Total"    
 )
 top_5 = pivot.nlargest(10, "Total")
-top_5
+print(top_5)
 
 
 
 
 ```
 
-
-
-
-<div>
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>InvoiceDate</th>
-      <th>2021</th>
-      <th>2022</th>
-      <th>2023</th>
-      <th>2024</th>
-      <th>2025</th>
-      <th>Total</th>
-    </tr>
-    <tr>
-      <th>ArtistName</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>Total</th>
-      <td>449.46</td>
-      <td>481.45</td>
-      <td>469.58</td>
-      <td>477.53</td>
-      <td>450.58</td>
-      <td>2328.60</td>
-    </tr>
-    <tr>
-      <th>Iron Maiden</th>
-      <td>33.66</td>
-      <td>34.65</td>
-      <td>0.99</td>
-      <td>33.66</td>
-      <td>35.64</td>
-      <td>138.60</td>
-    </tr>
-    <tr>
-      <th>U2</th>
-      <td>0.00</td>
-      <td>26.73</td>
-      <td>26.73</td>
-      <td>27.72</td>
-      <td>24.75</td>
-      <td>105.93</td>
-    </tr>
-    <tr>
-      <th>Metallica</th>
-      <td>21.78</td>
-      <td>22.77</td>
-      <td>2.97</td>
-      <td>25.74</td>
-      <td>16.83</td>
-      <td>90.09</td>
-    </tr>
-    <tr>
-      <th>Led Zeppelin</th>
-      <td>22.77</td>
-      <td>21.78</td>
-      <td>2.97</td>
-      <td>23.76</td>
-      <td>14.85</td>
-      <td>86.13</td>
-    </tr>
-    <tr>
-      <th>Lost</th>
-      <td>0.00</td>
-      <td>23.88</td>
-      <td>21.89</td>
-      <td>19.90</td>
-      <td>15.92</td>
-      <td>81.59</td>
-    </tr>
-    <tr>
-      <th>The Office</th>
-      <td>0.00</td>
-      <td>11.94</td>
-      <td>9.95</td>
-      <td>25.87</td>
-      <td>1.99</td>
-      <td>49.75</td>
-    </tr>
-    <tr>
-      <th>Os Paralamas Do Sucesso</th>
-      <td>8.91</td>
-      <td>0.99</td>
-      <td>11.88</td>
-      <td>13.86</td>
-      <td>8.91</td>
-      <td>44.55</td>
-    </tr>
-    <tr>
-      <th>Deep Purple</th>
-      <td>11.88</td>
-      <td>11.88</td>
-      <td>9.90</td>
-      <td>0.00</td>
-      <td>9.90</td>
-      <td>43.56</td>
-    </tr>
-    <tr>
-      <th>Faith No More</th>
-      <td>15.84</td>
-      <td>9.90</td>
-      <td>8.91</td>
-      <td>0.00</td>
-      <td>6.93</td>
-      <td>41.58</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
+    InvoiceDate                2021    2022    2023    2024    2025    Total
+    ArtistName                                                              
+    Total                    449.46  481.45  469.58  477.53  450.58  2328.60
+    Iron Maiden               33.66   34.65    0.99   33.66   35.64   138.60
+    U2                         0.00   26.73   26.73   27.72   24.75   105.93
+    Metallica                 21.78   22.77    2.97   25.74   16.83    90.09
+    Led Zeppelin              22.77   21.78    2.97   23.76   14.85    86.13
+    Lost                       0.00   23.88   21.89   19.90   15.92    81.59
+    The Office                 0.00   11.94    9.95   25.87    1.99    49.75
+    Os Paralamas Do Sucesso    8.91    0.99   11.88   13.86    8.91    44.55
+    Deep Purple               11.88   11.88    9.90    0.00    9.90    43.56
+    Faith No More             15.84    9.90    8.91    0.00    6.93    41.58
 
