@@ -12,7 +12,7 @@ services:
     ports:
       - 8888:8888      
     volumes:
-      - ./services/jupyter/data:/home/jovyan/work/data
+      - ./services/jupyter/notebooks:/home/jovyan/work/notebooks
       - ./db:/home/jovyan/work/db
     restart: unless-stopped
     networks:

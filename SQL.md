@@ -292,6 +292,8 @@ from IPython.display import Markdown
 
 ```python
 db_path = Path(Path.cwd().parent) / "db/chinook.db"
+if not db_path.exists():
+    db_path = Path(Path.cwd().parent.parent.parent) / "db/chinook.db"
 conn = sqlite3.connect(db_path)
 ```
 
@@ -301,12 +303,12 @@ def get_data(sql: str) -> pd.DataFrame:
     """Get data."""
     return pd.read_sql_query(sql, conn)
 
-def display_data(data: pd.DataFrame, head: bool | int = False) -> None:
+def display_data(data: pd.DataFrame, head: bool | int = False, index: bool = False) -> None:
     """Display data."""
     if head:
-        display(Markdown(data.head(head).to_markdown(index=False)))
+        display(Markdown(data.head(head).to_markdown(index=index)))
     else:
-        display(Markdown(data.to_markdown(index=False)))
+        display(Markdown(data.to_markdown(index=index)))
 ```
 
 ##  Выбрать все записи из таблицы `customer`
@@ -634,4 +636,56 @@ plt.show()
     
 ![png](images/output_25_0.png)
     
+
+
+
+```python
+# Данные с дубликатами
+data = {
+    'Product': ['Carrots', 'Broccoli', 'Banana', 'Banana'],
+    'Category': ['Vegetable', 'Vegetable', 'Fruit', 'Fruit'],
+    'Quantity': [8, 5, 3, 4],
+    'Amount': [270, 239, 617, 384]
+}
+df = pd.DataFrame(data)
+
+pivot = df.pivot_table(index=['Product'], values=['Amount'], aggfunc='sum')
+# display_data(pivot, index=True)
+pivot
+
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Amount</th>
+    </tr>
+    <tr>
+      <th>Product</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Banana</th>
+      <td>1001</td>
+    </tr>
+    <tr>
+      <th>Broccoli</th>
+      <td>239</td>
+    </tr>
+    <tr>
+      <th>Carrots</th>
+      <td>270</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
 

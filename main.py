@@ -40,8 +40,8 @@ def convert_and_merge(notebook_paths: list[str], output_md: str) -> None:
 
 if __name__ == "__main__":
     notebooks = [
-        "services/jupyter/data/header.ipynb",
-        "services/jupyter/data/examples.ipynb",
+        "services/jupyter/notebooks/header.ipynb",
+        "services/jupyter/notebooks/examples.ipynb",
     ]
 
     convert_and_merge(notebooks, "SQL.md")
